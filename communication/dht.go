@@ -52,19 +52,11 @@ func SetupDhtDiscovery(ctx context.Context, h host.Host, rendezvous string, boot
 
 		logger.Debug("Connecting to:", peerNode)
 
-		// stream, err := h.NewStream(ctx, peerNode.ID, protocol.ID(config.ProtocolID))
-
-		// if err != nil {
-		// 	logger.Warning("Connection failed:", err)
-		// 	continue
-		// } else {
-		// 	rw := bufio.NewReadWriter(bufio.NewReader(stream), bufio.NewWriter(stream))
-
-		// 	go writeData(rw)
-		// 	go readData(rw)
-		// }
-
-		logger.Info("Connected to:", peerNode)
+		if err := h.Connect(ctx, peerNode); err != nil {
+			logger.Error("Connection failed:", err)
+		} else {
+			logger.Info("Connected to:", peerNode)
+		}
 	}
 
 	return nil
